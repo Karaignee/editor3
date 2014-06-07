@@ -1,5 +1,6 @@
-<%= form_for(@article) do |f| %>
-  <% if @article.errors.any? %>
+<%= form_for @article, class: "form-horizontal" do |f| %>
+
+    <% if @article.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@article.errors.count, "error") %> prohibited this article from being saved:</h2>
 
@@ -12,17 +13,39 @@
   <% end %>
 
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
+    <div class="form-group">
+    <%= f.label :name, class: "col-md-4 control-label" %>
+      <div class='col-md-4'>
+        <%= f.text_field :name, class: "form-control" %>
+      </div>
   </div>
-  <div class="field">
-    <%= f.label :body %><br>
-    <%= f.text_area :body %>
+
+  <div id="container">
+    <div class="editable">
+
+    <div class="form-group">
+    <%= f.label :body, class:"col-md-8 control-label"%>
+      <div class='col-md-8'>
+        <%= f.text_area :body, class: 'form-control' %>
+      </div>
+  </div>
+
+    </div>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit "Submit", class: "btn btn-default btn-primary", onclick: "$('#article_content').val( $('#editable').cleanHtml());" %>
   </div>
 <% end %>
+<script src="medium-editor.js"></script>
 
-<script>var editor = new MediumEditor('.editable');</script>
+
+<script>
+  var editor = new MediumEditor('.editable', {
+    anchorInputPlaceholder: 'Type a link',
+    buttons: ['bold', 'italic', 'underline', 'quote', 'orderedlist', 'unorderedlist', 'indent']
+  });
+
+  $(document).on("ready", function() {
+    $('#editable').editable();
+  })
+</script>
